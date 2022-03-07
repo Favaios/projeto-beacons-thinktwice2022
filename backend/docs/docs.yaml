@@ -1,0 +1,549 @@
+---
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: TazOnde REST API
+host: localhost:5000
+basePath: /api/
+tags:
+- name: beacon
+- name: location
+- name: detection
+- name: statistics
+schemes:
+- https
+- http
+paths:
+  /beacons:
+    post:
+      tags:
+      - beacon
+      summary: Add a beacon
+      operationId: add.beacon
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Beacon MAC and location id
+        required: true
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            locationId:
+              type: integer
+      responses:
+        "200":
+          description: Beacon created
+          schema:
+            $ref: '#/definitions/Beacon'
+        "400":
+          description: Missing fields
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    get:
+      tags:
+      - beacon
+      summary: Get all beacons
+      operationId: getall.beacon
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All Beacons
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BeaconNested'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+  /beacons/{beacon_MAC}:
+    get:
+      tags:
+        - beacon
+      summary: Get beacon by MAC
+      operationId: getone.beacon
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Beacon of MAC
+          schema:
+            $ref: '#/definitions/Beacon'
+        "404":
+          description: Beacon not found
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+
+    put:
+      tags:
+        - beacon
+      summary: Update beacon by MAC
+      operationId: put.beacon
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Beacon body (so precisam ser passados parametros que queremos dar update)
+          required: false
+          schema:
+            $ref: '#/definitions/Beacon'
+      responses:
+        "200":
+          description: Confirmation message
+          schema:
+            $ref: '#/definitions/SuccessMessage'
+        "400":
+          description: Beacon not found || no body provided
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+    delete:
+      tags:
+        - beacon
+      summary: Delete beacon by MAC
+      operationId: delete.beacon
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmation message
+          schema:
+            $ref: '#/definitions/SuccessMessage'
+        "400":
+          description: Beacon not found ou outra merda qualquer i guess nao vou tar a analisar os codigos de erro sql todos mano foge disso
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+  /locations:
+    post:
+      tags:
+      - location
+      summary: Add a location
+      operationId: add.location
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Location name
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+      responses:
+        "200":
+          description: Location created
+          schema:
+            $ref: '#/definitions/Location'
+        "400":
+          description: Missing fields
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    get:
+      tags:
+      - location
+      summary: Get all locations
+      operationId: getall.location
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All Locations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Location'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+  /locations/{location_id}:
+    get:
+      tags:
+        - location
+      summary: Get location by id
+      operationId: getone.location
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Location of id
+          schema:
+            $ref: '#/definitions/Location'
+        "404":
+          description: Location not found
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+    put:
+      tags:
+        - location
+      summary: Update location by id
+      operationId: put.location
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Location body (so precisam ser passados parametros que queremos dar update)
+          required: false
+          schema:
+            $ref: '#/definitions/Location'
+      responses:
+        "200":
+          description: Confirmation message
+          schema:
+            $ref: '#/definitions/SuccessMessage'
+        "400":
+          description: Location not found
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+    delete:
+      tags:
+        - location
+      summary: Delete location by id
+      operationId: delete.location
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmation message
+          schema:
+            $ref: '#/definitions/SuccessMessage'
+        "400":
+          description: Location not found
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
+  /detections:
+    post:
+      tags:
+      - detection
+      summary: Insert a detection captured by a beacon
+      operationId: add.detection
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Beacon MAC
+        required: true
+        schema:
+          type: object
+          properties:
+            beaconId:
+              type: string
+      responses:
+        "200":
+          description: Beacon entry added
+          schema:
+            $ref: '#/definitions/Detection'
+        "400":
+          description: Missing beacon MAC
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+    get:
+      tags:
+      - detection
+      summary: Get detections (filters can be applied, no filter returns all)
+      operationId: getall.detection
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: beacon
+        schema:
+          type: string
+        required: false
+        description: MAC of a beacon
+      - in: path
+        name: location
+        schema:
+          type: integer
+        required: false
+        description: ID of a location
+      - in: path
+        name: device
+        schema:
+          type: string
+          format: uuid
+        required: false
+        description: UUID of one or more devices
+      responses:
+        "200":
+          description: Filtered Detections
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Detection'
+        "500":
+          description: Server / DB error
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+  /detections/states:
+    get:
+      tags:
+      - detection
+      summary:
+      - State of all devices
+      operationId: detect.states
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":          
+          description: All devices states
+          schema:
+            type: array
+            items:
+              schema:
+                type: object
+              properties:
+                deviceId:
+                  type: string
+                  format: uuid
+                state:
+                  type: string
+  /detections/states/{device_uuid}:
+    get:
+      tags:
+      - detection
+      summary:
+      - State of device of uuid
+      operationId: detect.statesof
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":          
+          description: Devices state
+          schema:
+            type: object
+            properties:
+              deviceId:
+                type: string
+                format: uuid
+              state:
+                type: string
+  /statistics/detections:
+    get:
+      tags:
+      - statistics
+      summary:
+      - Total detections by location aggregation
+      operationId: stats.detbyloc
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: location
+        schema:
+          type: Integer
+        required: false
+        description: id of location to filter (multiple can be used, ?location=1&location=2)
+      - in: path
+        name: beacon
+        schema:
+          type: string
+        required: false
+        description: MAC of a beacon
+      - in: path
+        name: mints
+        schema:
+          type: date
+        required: false
+        description: starting timestamp
+      - in: path
+        name: maxts
+        schema:
+          type: date
+        required: false
+        description: ending timestamp
+      responses:
+        "200":
+          description: filtered aggregation
+          schema:
+            type: array
+            items:
+              schema:
+                type: object
+              properties:
+                c:
+                  type: integer
+                location:
+                  $ref: '#/definitions/Location'
+  /statistics/bucket:
+    get:
+      tags:
+      - statistics
+      summary:
+      - Info para grafico linear
+      operationId: stats.bucket
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: mins
+        schema:
+          type: Integer
+        required: false
+        description: bucket type
+      responses:
+        "200":
+          description: filtered aggregation
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  schema:
+                    type: object
+                  properties:
+                    c:
+                      type: integer
+                    ts:
+                      type: date
+              mints:
+                type: date
+
+              maxts:
+                type: date
+
+definitions:
+  Beacon:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      locationId:
+        type: integer
+        format: int32
+  Location:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+  Detection:
+    type: object
+    properties:
+      beaconId:
+        type: string
+      locationId:
+        type: integer
+        format: int32
+      deviceId:
+        type: string
+        format: uuid
+      ts:
+        type: date
+      new:
+        type: boolean
+  BeaconNested:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      location:
+        $ref: '#/definitions/Location'
+  SuccessMessage:
+    type: object
+    properties:
+      message:
+        type: string
+  ErrorMessage:
+    type: object
+    properties:
+      error:
+        type: string
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

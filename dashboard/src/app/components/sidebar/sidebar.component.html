@@ -1,0 +1,59 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-question"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Tazonde</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <ng-container *ngFor="let item of navigation | keyvalue; index as i1">
+
+    <!-- Divider -->
+    <hr class="sidebar-divider {{ item.key ? '' : 'my-0' }}">
+
+    <!-- Heading -->
+    <div class="sidebar-heading" *ngIf="item.key">
+      {{ item.key }}
+    </div>
+
+    <ng-container *ngFor="let nav of item.value; index as i2">
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active" *ngIf="!navHasChildren(nav)">
+        <a class="nav-link" [routerLink]="nav.path" routerLinkActive="active">
+          <i class="fas fa-fw fa-{{ nav.icon }}"></i>
+          <span>{{ nav.name }}</span></a>
+      </li>
+      
+      <li class="nav-item" *ngIf="navHasChildren(nav)">
+        <a class="nav-link collapsed" [routerLink]="nav.path" routerLinkActive="active" data-toggle="collapse" [attr.data-target]="'#collapse' + i1 + i2" aria-expanded="true"
+          [attr.aria-controls]="'collapse' + i1 + i2">
+          <i class="fas fa-fw fa-{{ nav.icon }}"></i>
+          <span>{{ nav.name }}</span>
+        </a>
+        <div id="collapse{{i1}}{{i2}}" class="collapse" [attr.aria-labelledby]="'heading' + i1 + i2" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <ng-container *ngFor="let itemc of nav.children | keyvalue">
+              <h6 class="collapse-header">{{ itemc.key }}:</h6>
+              <a *ngFor="let subitem of itemc.value" class="collapse-item" [routerLink]="subitem.path" routerLinkActive="active">{{subitem.name}}</a>
+            </ng-container>
+          </div>
+        </div>
+      </li>
+    </ng-container>
+
+  </ng-container>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle" (click)="toggleSidebar()"></button>
+  </div>
+
+</ul>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "731035795393",
+    "project_id": "tazonde-bea9c",
+    "storage_bucket": "tazonde-bea9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731035795393:android:311a6cb359cd7ec7513940",
+        "android_client_info": {
+          "package_name": "com.tazonde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731035795393-52nqfo7mo6qjifm526brduuf0tu0fd54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Yeuhp6U80n7kUUoASt1niuG1tVYI77Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731035795393-52nqfo7mo6qjifm526brduuf0tu0fd54.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,17 @@
+<div class="table-responsive">
+  <table datatable class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns" [class]="col.click ? 'col-1' : ''">{{ col.title }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let col of columns" [class]="col.click ? 'text-center' : ''">
+          <ng-container *ngIf="col.name">{{ getValue(row[col.name], col) }}</ng-container>
+          <button class="btn btn-{{col.color}}" *ngIf="col.click" (click)="col.click(row)" [attr.data-toggle]="col.modal?'modal':''" [attr.data-target]="col.modal?'#'+col.modal:''"><i class="fa fa-{{col.icon}} fa-align-center fa-sm fa-fw"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

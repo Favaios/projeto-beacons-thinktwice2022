@@ -1,0 +1,5 @@
+rootProject.name = 'Tazonde'
+include ':@lg2_react-native-eddystone'
+project(':@lg2_react-native-eddystone').projectDir = new File(rootProject.projectDir, '../node_modules/@lg2/react-native-eddystone/android')
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'

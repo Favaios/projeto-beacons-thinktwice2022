@@ -1,0 +1,40 @@
+services:
+  apache:
+    image: httpd:2.4-alpine
+    volumes:
+      - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./apache/extra/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf:ro
+    ports:
+      - 80:80
+
+  dashboard:
+    build: ./dashboard
+
+  api:
+    build: ./backend/rest
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: ./.env
+    environment:
+      - PORT=$NODE_DOCKER_PORT
+      - DB_USER=$MYSQL_USER
+      - DB_PASSWORD=$MYSQL_PASSWORD
+      - DB_DATABASE=$MYSQL_DATABASE
+      - DB_HOST=db
+
+  db:
+    image: mysql:8-debian
+    env_file: ./.env
+    environment:
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    restart: always
+    healthcheck:
+      test: "mysql $MYSQL_DATABASE -u$MYSQL_USER -p$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 5s
+      timeout: 2s
+      retries: 10
+

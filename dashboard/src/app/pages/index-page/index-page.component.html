@@ -1,0 +1,88 @@
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm d-print-none" (click)="printReport()">
+      <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Area Chart -->
+    <app-card-chart 
+      title="Detections By Period" 
+      chartType="line"
+      [chartLabels]="detectionsLineChartLabels"
+      chartDataLabel="Interactions" 
+      [chartData]="detectionsLineChartValues" 
+      actionsHeader="Interactions"
+      [actions]="[{name:'Filter', callback: a, modal: 'lineChartFilters'}]"
+      chartId="detectionsPeriod"
+      class="col-xl-8 col-lg-7"></app-card-chart>
+
+    <!-- Pie Chart -->
+    <app-card-chart 
+      title="Detections By Location" 
+      chartType="pie"
+      [chartLabels]="detectionsPieChartLabels"
+      [chartData]="detectionsPieChartValues"
+      [chartColors]="['#4e73df', '#1cc88a', '#36b9cc']"
+      [chartHoverColors]="['#2e59d9', '#17a673', '#2c9faf']"
+      actionsHeader="Interactions"
+      [actions]="[{name:'Filter', callback: a, modal: 'pieChartFilters'}]"
+      chartId="locationDetections"
+      class="col-xl-4 col-lg-5"></app-card-chart>
+  </div>
+</div>
+
+<div class="modal fade" id="lineChartFilters" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Filter Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="beaconLocation">Location</label>
+          <select class="form-control" id="beaconLocation" multiple [(ngModel)]="detectionsLineChartLocationFilter">
+            <option [value]="location.id" *ngFor="let location of locations">{{location.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="loadLineChart()">Filter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pieChartFilters" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Filter Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="beaconLocation">Location</label>
+          <select class="form-control" id="beaconLocation" multiple [(ngModel)]="detectionsPieChartLocationFilter">
+            <option [value]="location.id" *ngFor="let location of locations">{{location.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="loadPieChart()">Filter</button>
+      </div>
+    </div>
+  </div>
+</div>
